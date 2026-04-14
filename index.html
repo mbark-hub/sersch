@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByBokaArabic - بحث السكربتات</title>
+    <style>
+        :root {
+            --bg-color: #4a0404;
+            --accent-color: #800000;
+            --text-color: #ffffff;
+            --discord-blue: #00bfff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        /* العبارة المتحركة */
+        .moving-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* حقل البحث */
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #660000;
+            background-color: #2a0202;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff0000;
+        }
+
+        /* شبكة السكربتات */
+        .scripts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 50px;
+        }
+
+        .script-card {
+            background-color: #5c0505;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #7a0707;
+            transition: 0.3s;
+        }
+
+        .script-card:hover {
+            transform: scale(1.05);
+        }
+
+        .script-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            background-color: #333;
+        }
+
+        .script-name {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .get-btn {
+            background-color: #000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* منطقة عرض السكربت والنسخ */
+        .display-area {
+            display: none;
+            background: #2a0202;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .copy-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* أزرار الديسكورد والمعلومات */
+        .discord-btn {
+            background-color: var(--discord-blue);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .info-box {
+            background-color: #3d0303;
+            border: 2px dashed #ff0000;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin-top: 30px;
+            line-height: 1.6;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="moving-title">البحث عن سكربتات 🔎</div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="كتابة اسم السكربت…" onkeyup="searchScripts()">
+    </div>
+
+    <div class="scripts-grid" id="scriptsGrid">
+        </div>
+
+    <div id="displayArea" class="display-area">
+        <span id="scriptContent"></span>
+        <button class="copy-btn" onclick="copyText()">نسخ</button>
+    </div>
+
+    <a href="https://discord.gg/FRnDnSwPS" class="discord-btn">نسخ الديسكورد <—</a>
+
+    <div class="info-box">
+        اي استفسار او اي اقتراح تبون نضيفه تعال الدس و روح عند الاقتراحات واقترح ولو تبون شهادة تعال افتح التكت كل أربعاء نحط الشهادة إلى يوم الأحد ❤️
+    </div>
+
+    <script>
+        // توليد 20 سكربت عشوائي عند التحميل
+        const grid = document.getElementById('scriptsGrid');
+        for (let i = 1; i <= 20; i++) {
+            grid.innerHTML += `
+                <div class="script-card">
+                    <img src="https://via.placeholder.com/150/800000/FFFFFF?text=Script+Image" alt="سكربت">
+                    <div class="script-name">سكربت ByBoka ${i}</div>
+                    <button class="get-btn" onclick="showScript('print(\'Hello ByBoka ${i}\')')">اخذ السكربت</button>
+                </div>
+            `;
+        }
+
+        function searchScripts() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('script-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                let name = cards[i].getElementsByClassName('script-name')[0].innerText;
+                if (name.toLowerCase().includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        function showScript(content) {
+            const area = document.getElementById('displayArea');
+            const span = document.getElementById('scriptContent');
+            area.style.display = "block";
+            span.innerText = content;
+            window.scrollTo({ top: area.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function copyText() {
+            const content = document.getElementById('scriptContent').innerText;
+            navigator.clipboard.writeText(content);
+            alert("تم نسخ السكربت بنجاح!");
+        }
+    </script>
+
+</body>
+</html>
